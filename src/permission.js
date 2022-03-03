@@ -8,7 +8,7 @@ import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login'] // no redirect whitelist
+const whiteList = ['/login'] // 没有重定向白名单
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
@@ -32,7 +32,7 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           // get user info
-          await store.dispatch('user/getInfo')
+           await store.dispatch('user/getInfo') // 这是获取用户信息的接口，你们没有就把这个去掉就行了，他这里做了接口鉴权，每次路由跳转都判断了当前token是否有效
 
           next()
         } catch (error) {
@@ -51,7 +51,7 @@ router.beforeEach(async(to, from, next) => {
       // in the free login whitelist, go directly
       next()
     } else {
-      // other pages that do not have permission to access are redirected to the login page.
+      // 没有访问权限的其他页面被重定向到登录页面。
       next(`/login?redirect=${to.path}`)
       NProgress.done()
     }

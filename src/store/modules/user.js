@@ -12,35 +12,41 @@ const getDefaultState = () => {
 
 const state = getDefaultState()
 
-const mutations = {
-  RESET_STATE: (state) => {
+const mutations = {//commit：同步操作，数据提交至 mutations ，可用于读取用户信息写到缓存里this.$store.commit('loginStatus', 1);
+  RESET_STATE: (state) => { //reset_state
     Object.assign(state, getDefaultState())
   },
-  SET_TOKEN: (state, token) => {
+  SET_TOKEN: (state, token) => {//set_token
     state.token = token
   },
-  SET_NAME: (state, name) => {
+  SET_NAME: (state, name) => { //set_name
     state.name = name
   },
-  SET_AVATAR: (state, avatar) => {
+  SET_AVATAR: (state, avatar) => {//set_avatar
     state.avatar = avatar
   }
 }
 
-const actions = {
+const actions = {//dispatch：含有异步操作，数据提交至 actions ，可用于向后台提交数据this.$store.dispatch('isLogin', true);
   // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
+      
       login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+
+        console.log(response, "--------------------")
+
+        const { token } = response
+       
+        commit('SET_TOKEN', token)//ste_token
+        setToken(token)
         resolve()
       }).catch(error => {
         reject(error)
       })
     })
+
   },
 
   // get user info
@@ -55,8 +61,8 @@ const actions = {
 
         const { name, avatar } = data
 
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
+        commit('SET_NAME', name)//set_name
+        commit('SET_AVATAR', avatar)//set_avatar
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -70,7 +76,7 @@ const actions = {
       logout(state.token).then(() => {
         removeToken() // must remove  token  first
         resetRouter()
-        commit('RESET_STATE')
+        commit('RESET_STATE')//reset_state
         resolve()
       }).catch(error => {
         reject(error)
@@ -82,7 +88,7 @@ const actions = {
   resetToken({ commit }) {
     return new Promise(resolve => {
       removeToken() // must remove  token  first
-      commit('RESET_STATE')
+      commit('RESET_STATE')//reset_state
       resolve()
     })
   }
