@@ -80,6 +80,7 @@ const actions = {//dispatch：含有异步操作，数据提交至 actions ，�
         // resolve()
     //   }).catch(error => {
     //     reject(error)
+    
     //   })
     // })
   },
