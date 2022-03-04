@@ -32,7 +32,7 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           // get user info
-           await store.dispatch('user/getInfo') // 这是获取用户信息的接口，你们没有就把这个去掉就行了，他这里做了接口鉴权，每次路由跳转都判断了当前token是否有效
+          await store.dispatch('user/getInfo') // 这是获取用户信息的接口，你们没有就把这个去掉就行了，他这里做了接口鉴权，每次路由跳转都判断了当前token是否有效
 
           next()
         } catch (error) {

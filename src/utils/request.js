@@ -6,7 +6,7 @@ import { getToken } from '@/utils/auth'
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // withCredentials: true, // 当跨域请求时发送cookie
+  // withCredentials: true, // 当跨域请求时发送cookie withCredential
   timeout: 50000, // request timeout
   headers: {
     // application/x-www-form-urlencoded

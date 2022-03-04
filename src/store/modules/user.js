@@ -19,11 +19,11 @@ const mutations = {//commit：同步操作，数据提交至 mutations ，可用
   SET_TOKEN: (state, token) => {//set_token
     state.token = token
   },
-  SET_NAME: (state, name) => { //set_name
-    state.name = name
+  SET_NAME: (state, username) => { //set_name
+    state.name = username
   },
-  SET_AVATAR: (state, avatar) => {//set_avatar
-    state.avatar = avatar
+  SET_AVATAR: (state, userImage) => {//set_avatar
+    state.avatar = userImage
   }
 }
 
@@ -53,16 +53,16 @@ const actions = {//dispatch：含有异步操作，数据提交至 actions ，�
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
-        const { data } = response
-
+        
+        const  data = response
         if (!data) {
-          return reject('Verification failed, please Login again.')
+          return reject('验证失败，请重新登录.')
         }
+        // debugger
+        const { username, userImage } = data
 
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)//set_name
-        commit('SET_AVATAR', avatar)//set_avatar
+        commit('SET_NAME', username)//set_name
+        commit('SET_AVATAR', userImage)//set_avatar
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -72,16 +72,16 @@ const actions = {//dispatch：含有异步操作，数据提交至 actions ，�
 
   // user logout
   logout({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+    // return new Promise((resolve, reject) => {
+    //   logout(state.token).then(() => {
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')//reset_state
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
+        // resolve()
+    //   }).catch(error => {
+    //     reject(error)
+    //   })
+    // })
   },
 
   // remove token
