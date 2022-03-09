@@ -72,17 +72,17 @@ const actions = {//dispatch：含有异步操作，数据提交至 actions ，�
 
   // user logout
   logout({ commit, state }) {
-    // return new Promise((resolve, reject) => {
-    //   logout(state.token).then(() => {
+    return new Promise((resolve, reject) => {
+      logout(state.token).then(() => {
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')//reset_state
-        // resolve()
-    //   }).catch(error => {
-    //     reject(error)
+        resolve()
+      }).catch(error => {
+        reject(error)
     
-    //   })
-    // })
+      })
+    })
   },
 
   // remove token
