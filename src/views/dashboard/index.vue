@@ -8,22 +8,16 @@
           ref="formInline"
           class="demo-form-inline"
         >
-          <el-form-item label="文件名称" prop="projectName">
+          <el-form-item label="文件名称" prop="fileName">
             <el-input
-              v-model="formInline.projectName"
+              v-model="formInline.fileName"
               placeholder="文件名称"
             ></el-input>
           </el-form-item>
-          <el-form-item label="上传人" prop="bid">
+          <el-form-item label="上传人" prop="fileBy">
             <el-input
-              v-model="formInline.bid"
+              v-model="formInline.fileBy"
               placeholder="上传人"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="上传时间" prop="docName">
-            <el-input
-              v-model="formInline.docName"
-              placeholder="上传时间"
             ></el-input>
           </el-form-item>
           <div class="btnCont">
@@ -50,20 +44,18 @@
           :header-cell-style="{ 'text-align': 'center' }"
           :cell-style="{ 'text-align': 'center' }"
         >
-          <el-table-column prop="address" label="文件名" show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="date" label="上传时间" show-overflow-tooltip>
+          <el-table-column prop="fileName" label="文件名" show-overflow-tooltip>
           </el-table-column>
           <el-table-column
-            prop="name"
-            label="类型"
-           
-           
+            prop="updateTime"
+            label="上传时间"
             show-overflow-tooltip
           >
           </el-table-column>
+          <!-- <el-table-column prop="name" label="类型" show-overflow-tooltip>
+          </el-table-column> -->
           <el-table-column
-            prop="name"
+            prop="updateBy"
             label="上传人"
             width="200px"
             show-overflow-tooltip
@@ -72,9 +64,7 @@
           <el-table-column label="操作" width="110px">
             <template slot-scope="scope">
               <!-- 这里可以拿到当前行的内容 row -->
-              <el-button type="text" @click="goRedact(scope, tableList)"
-                >查看
-              </el-button>
+              <el-button type="text" @click="goRedact(scope)">下载 </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -107,6 +97,10 @@
 </template>
 
 <script>
+import { getList } from "@/api/regulation/project";
+import { getToken } from "@/utils/auth";
+import axios from "axios";
+
 import Add from "./add";
 import Amend from "./amend";
 export default {
@@ -118,52 +112,32 @@ export default {
       total: 0,
       formInline: {
         //头部查询
-        projectName: "",
-        bid: "",
-        docType: "",
-        docName: "",
+        fileName: "",
+        fileBy: "",
       },
       dialogVisible: false,
       flag: "",
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄上海市普陀区金沙江路 ",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-      ],
+      tableData: [],
     };
   },
+  created() {
+    this.getProjectList();
+  },
   methods: {
+    async getProjectList() {
+      let { fileName, fileBy } = this.formInline;
+      let data = await getList(this.pageNum, this.pageSize, fileName, fileBy);
+      this.tableData = data.records;
+      this.total = data.total;
+      this.loading = false;
+    },
+
     //提交查询
     async onSubmit() {
       try {
-        let { projectName, bid, docType, docName } = this.formInline;
-        let data = await getInquire(
-          1,
-          this.pageSize,
-          projectName,
-          bid,
-          docType,
-          docName,
-          this.listIds
-        );
-        this.tableList = data.rows;
+        let { fileName, fileBy } = this.formInline;
+        let data = await getList(this.pageNum, this.pageSize, fileName, fileBy);
+        this.tableData = data.records;
         this.total = data.total;
         this.loading = false;
       } catch (e) {
@@ -173,7 +147,6 @@ export default {
     //重置查询头部
     onClear(formName) {
       this.$refs[formName].resetFields();
-      this.listIds = [];
       this.getProjectList();
     },
     //新增
@@ -182,12 +155,41 @@ export default {
       this.dialogVisible = true;
     },
     //查看
+    // goRedact(scope) {
+    // this.flag = "Amend";
+    // this.dialogVisible = true;
+    //this.personData = scope.row.projectdocId;
+    // let fileDowloadName =
+    //   'http://192.168.12.9:8080/' +
+    //   `fileShare/downloadFileShare?name=${encodeURI(encodeURI(scope.row.fileName))}&path=${scope.row.fileUrl}`;
+    // location.href = fileDowloadName;
+    // },
     goRedact(scope) {
-      this.flag = "Amend";
-      this.dialogVisible = true;
-      //this.personData = scope.row.projectdocId;
+      console.log(scope);
+      axios
+        .get(
+          `http://192.168.12.9:8080/fileShare/downloadFileShare?name=${scope.row.fileName}&path=${scope.row.fileUrl}`,
+          {
+            "Content-type": "application/octet-stream",
+            headers: {
+              Authorization: getToken(),
+            },
+            responseType: "blob",
+          }
+        )
+        .then((res) => {
+          const fileName =
+            res.headers["content-disposition"].match(/filename=(.*)/)[1];
+          const blob = new Blob([res.data], {
+            type: "application/octet-stream",
+          });
+          let link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.setAttribute("download", decodeURI(fileName));
+          link.click();
+          link = null;
+        });
     },
-
     //关闭弹窗
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -201,11 +203,11 @@ export default {
      */
     handleSizeChange(val) {
       this.pageSize = val;
-      this.onPaging();
+      this.onSubmit();
     },
     handleCurrentChange(val) {
       this.pageNum = val;
-      this.onPaging();
+      this.onSubmit();
     },
   },
 };
