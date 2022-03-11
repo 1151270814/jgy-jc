@@ -30,6 +30,8 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+//当设置 noRedirect 的时候该路由在面包屑导航中不可被点击
+//redirect: 'noRedirect'
 export const constantRoutes = [
   {
     path: '/login',
@@ -46,49 +48,113 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/home',
     children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '文件', icon: 'el-icon-folder-opened' }
+      path: 'home',
+      name: 'Home',
+      component: () => import('@/views/home/index'),
+      meta: { title: '首页', icon: 'el-icon-s-home' }
     }]
   },
 
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   redirect: '/example/table',
-  //   name: 'Example',
-  //   meta: { title: '例子', icon: 'el-icon-s-help' },
-  //   children: [
-  //     {
-  //       path: 'table',
-  //       name: 'Table',
-  //       component: () => import('@/views/table/index'),
-  //       meta: { title: '切换', icon: 'table' }
-  //     },
-  //     {
-  //       path: 'tree',
-  //       name: 'Tree',
-  //       component: () => import('@/views/tree/index'),
-  //       meta: { title: '树', icon: 'tree' }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/industryPolicy',
+    component: Layout,
+    children: [
+      {
+        path: '/industryPolicy',
+        name: 'IndustryPolicy',
+        component: () => import('@/views/IndustryPolicy/index'),
+        meta: { title: '行业政策', icon: 'el-icon-edit-outline' }
+      }
+    ]
+  }, 
+   {
+    path: '/regulations',
+    component: Layout,
+    children: [
+      {
+        path: '/regulations',
+        name: 'regulations',
+        component: () => import('@/views/regulations/index'),
+        meta: { title: '工程合约', icon: 'el-icon-edit-outline' }
+      }
+    ]
+  },
+  {
+    path: '/engineerings',
+    component: Layout,
+    children: [
+      {
+        path: '/engineerings',
+        name: 'Engineering',
+        component: () => import('@/views/Engineering/index'),
+        meta: { title: '工程合约', icon: 'el-icon-edit-outline' }
+      }
+    ]
+  },
+  
+  {
+    path: '/security',
+    component: Layout,
+    children: [
+      {
+        path: '/security',
+        name: 'security',
+        component: () => import('@/views/security/index'),
+        meta: { title: '安全环保', icon: 'el-icon-s-promotion' }
+      }
+    ]
+  },
+  {
+    path: '/technology',
+    component: Layout,
+    children: [
+      {
+        path: '/technology',
+        name: 'Technology',
+        component: () => import('@/views/Technology/index'),
+        meta: { title: '技术创新', icon: 'el-icon-brush' }
+      }
+    ]
+  },
+  {
+    path: '/theparty',
+    component: Layout,
+    children: [
+      {
+        path: '/theparty',
+        name: 'Theparty',
+        component: () => import('@/views/Theparty/index'),
+        meta: { title: '党建廉政', icon: 'el-icon-s-custom' }
+      }
+    ]
+  },
+  {
+    path: '/administrative',
+    component: Layout,
+    children: [
+      {
+        path: '/administrative',
+        name: 'administrative',
+        component: () => import('@/views/administrative/index'),
+        meta: { title: '综合行政', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/workerBBS',
+    component: Layout,
+    children: [
+      {
+        path: '/workerBBS',
+        name: 'workerBBS',
+        component: () => import('@/views/workerBBS/index'),
+        meta: { title: '职工论坛', icon: 'form' }
+      }
+    ]
+  },
 
-  // {
-  //   path: '/form',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'Form',
-  //       component: () => import('@/views/form/index'),
-  //       meta: { title: 'Form', icon: 'form' }
-  //     }
-  //   ]
-  // },
 
   // {
   //   path: '/nested',

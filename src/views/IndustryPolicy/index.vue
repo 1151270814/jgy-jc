@@ -118,11 +118,14 @@ export default {
       dialogVisible: false,
       flag: "",
       tableData: [],
+      flas: "",
     };
   },
   created() {
     this.getProjectList();
+    // this.flas=  this.store.apiConfiguration
   },
+
   methods: {
     async getProjectList() {
       let { fileName, fileBy } = this.formInline;
@@ -168,7 +171,8 @@ export default {
       console.log(scope);
       axios
         .get(
-          `http://192.168.12.9:8080/fileShare/downloadFileShare?name=${scope.row.fileName}&path=${scope.row.fileUrl}`,
+          this.$store.state.apiConfiguration.url +
+            `/fileShare/downloadFileShare?name=${scope.row.fileName}&path=${scope.row.fileUrl}`,
           {
             "Content-type": "application/octet-stream",
             headers: {

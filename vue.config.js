@@ -40,7 +40,7 @@ module.exports = {
       // change xxx-api/login => mock/login
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       "/api": {
-        target: `http://192.168.12.9:8080/api`, // 哪里要调用接口登录 //.env.development文件修改成  http://192.168.12.13:8080
+        target: `http://192.168.5.9:8080/api`, // 哪里要调用接口登录 //.env.development文件修改成  http://192.168.12.13:8080
         changeOrigin: true,
         pathRewrite: {
           "^/api": ''

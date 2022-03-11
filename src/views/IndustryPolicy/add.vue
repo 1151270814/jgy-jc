@@ -48,7 +48,9 @@ export default {
         // 设置上传的请求头部
         headers: { Authorization: getToken() },
         // 上传的地址
-        url: "http://192.168.12.9:8080/fileShare/uploadFileShare",
+        url:
+          this.$store.state.apiConfiguration.url +
+          `/fileShare/uploadFileShare/?`,
         fileList: [],
         fileName: [],
       },
