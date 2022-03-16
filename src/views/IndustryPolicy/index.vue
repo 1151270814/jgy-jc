@@ -87,7 +87,7 @@
       :before-close="handleClose"
     >
       <add ref="projectAdd" v-if="flag === 'Add'" />
-      <amend ref="amend" v-if="flag === 'Amend'" />
+      <!-- <amend ref="amend" v-if="flag === 'Amend'" /> -->
       <!-- <span slot="footer" class="dialog-footer">
         <el-button class="tBtn" @click="tBtnFun">确 定</el-button>
         <el-button class="fBtn" @click="getMsgFormSon">取 消</el-button>
@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import { getList } from "@/api/regulation/project";
+import { getList,expExmPaper } from "@/api/regulation/project";
 import { getToken } from "@/utils/auth";
 import axios from "axios";
 
@@ -157,42 +157,9 @@ export default {
       this.flag = "Add";
       this.dialogVisible = true;
     },
-    //查看
-    // goRedact(scope) {
-    // this.flag = "Amend";
-    // this.dialogVisible = true;
-    //this.personData = scope.row.projectdocId;
-    // let fileDowloadName =
-    //   'http://192.168.12.9:8080/' +
-    //   `fileShare/downloadFileShare?name=${encodeURI(encodeURI(scope.row.fileName))}&path=${scope.row.fileUrl}`;
-    // location.href = fileDowloadName;
-    // },
-    goRedact(scope) {
+   async goRedact(scope) {
       console.log(scope);
-      axios
-        .get(
-          this.$store.state.apiConfiguration.url +
-            `/fileShare/downloadFileShare?name=${scope.row.fileName}&path=${scope.row.fileUrl}`,
-          {
-            "Content-type": "application/octet-stream",
-            headers: {
-              Authorization: getToken(),
-            },
-            responseType: "blob",
-          }
-        )
-        .then((res) => {
-          const fileName =
-            res.headers["content-disposition"].match(/filename=(.*)/)[1];
-          const blob = new Blob([res.data], {
-            type: "application/octet-stream",
-          });
-          let link = document.createElement("a");
-          link.href = URL.createObjectURL(blob);
-          link.setAttribute("download", decodeURI(fileName));
-          link.click();
-          link = null;
-        });
+      await expExmPaper(scope)
     },
     //关闭弹窗
     handleClose(done) {

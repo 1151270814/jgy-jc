@@ -77,7 +77,7 @@ export const constantRoutes = [
         path: '/regulations',
         name: 'regulations',
         component: () => import('@/views/regulations/index'),
-        meta: { title: '工程合约', icon: 'el-icon-edit-outline' }
+        meta: { title: '规章制度', icon: 'el-icon-edit-outline' }
       }
     ]
   },

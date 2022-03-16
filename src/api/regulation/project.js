@@ -1,23 +1,45 @@
 //工程项目档案库
+import { getToken } from "@/utils/auth";
+import store from '@/store'
+import axios from 'axios'
 
 import request from '@/utils/request'
 
 
 
 //获取列表
-export function getList(currentPage,pageNum,fileName,fileBy) {
+export function getList(currentPage, pageNum, fileName, fileBy) {
   return request({
     url: `/fileShare/queryFileShareCondition?pageNum=${pageNum}&currentPage=${currentPage}&fileName=${fileName}&fileBy=${fileBy}`,
     method: 'get',
   })
 }
-// //项目获取
-// export function getProject() {
-//   return request({
-//     url: '/newProject/pc/list',
-//     method: 'get',
-//   })
-// }
+//项目获取
+export function expExmPaper(scope) {
+  return axios.get(
+    store.state.apiConfiguration.url +
+    `fileShare/downloadFileShare?name=${scope.row.fileName}&path=${scope.row.fileUrl}`,
+    {
+      "Content-type": "application/octet-stream",
+      headers: {
+        Authorization: getToken(),
+      },
+      responseType: "blob",
+    }
+  ).then((res) => {
+    const fileName =
+      res.headers["content-disposition"].match(/filename=(.*)/)[1];
+    const blob = new Blob([res.data], {
+      type: "application/octet-stream",
+    });
+    let link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", decodeURI(fileName));
+    link.click();
+    link = null;
+  });
+
+}
 // //项目查询
 // export function ProjectInquire(pageNum, pageSize, projectName, bid,) {
 //   return request({
