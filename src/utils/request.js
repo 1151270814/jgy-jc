@@ -55,6 +55,7 @@ service.interceptors.response.use(
    * 你也可以通过HTTP状态码来判断状态
    */
   response => {
+
     console.log(response.data, "---------------------") // 来了
     const res = response.data
     // if the custom code is not 20000, it is judged as an error.

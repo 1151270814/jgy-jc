@@ -65,8 +65,9 @@ export const constantRoutes = [
         path: '/industryPolicy',
         name: 'IndustryPolicy',
         component: () => import('@/views/IndustryPolicy/index'),
-        meta: { title: '行业政策', icon: 'el-icon-edit-outline' }
-      }
+        meta: { title: '行业政策', icon: 'el-icon-postcard' }
+      },
+
     ]
   }, 
    {
@@ -77,7 +78,7 @@ export const constantRoutes = [
         path: '/regulations',
         name: 'regulations',
         component: () => import('@/views/regulations/index'),
-        meta: { title: '规章制度', icon: 'el-icon-edit-outline' }
+        meta: { title: '规章制度', icon: 'el-icon-date' }
       }
     ]
   },
@@ -138,7 +139,7 @@ export const constantRoutes = [
         path: '/administrative',
         name: 'administrative',
         component: () => import('@/views/administrative/index'),
-        meta: { title: '综合行政', icon: 'form' }
+        meta: { title: '综合行政', icon: 'el-icon-files' }
       }
     ]
   },
@@ -150,7 +151,7 @@ export const constantRoutes = [
         path: '/workerBBS',
         name: 'workerBBS',
         component: () => import('@/views/workerBBS/index'),
-        meta: { title: '职工论坛', icon: 'form' }
+        meta: { title: '职工论坛', icon: 'el-icon-chat-dot-round' }
       }
     ]
   },

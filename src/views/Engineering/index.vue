@@ -1,5 +1,5 @@
 <template>
-<!-- 工程合约 -->
+  <!-- 工程合约 -->
   <div class="app-container">
     <el-header>
       <div class="sxForm">
@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import { getList,expExmPaper } from "@/api/regulation/project";
+import { getList, expExmPaper } from "@/api/regulation/project";
 import { getToken } from "@/utils/auth";
 import axios from "axios";
 
@@ -119,6 +119,7 @@ export default {
       flag: "",
       tableData: [],
       flas: "",
+      fileTypeId: 3,
     };
   },
   created() {
@@ -129,7 +130,13 @@ export default {
   methods: {
     async getProjectList() {
       let { fileName, fileBy } = this.formInline;
-      let data = await getList(this.pageNum, this.pageSize, fileName, fileBy);
+      let data = await getList(
+        this.pageNum,
+        this.pageSize,
+        fileName,
+        fileBy,
+        this.fileTypeId
+      );
       this.tableData = data.records;
       this.total = data.total;
       this.loading = false;
@@ -158,9 +165,9 @@ export default {
       this.dialogVisible = true;
     },
     //查看
-   async goRedact(scope) {
+    async goRedact(scope) {
       console.log(scope);
-      await expExmPaper(scope)
+      await expExmPaper(scope);
     },
     //关闭弹窗
     handleClose(done) {

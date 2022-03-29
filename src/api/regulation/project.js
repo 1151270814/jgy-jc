@@ -8,9 +8,9 @@ import request from '@/utils/request'
 
 
 //获取列表
-export function getList(currentPage, pageNum, fileName, fileBy) {
+export function getList(currentPage, pageNum, fileName, fileBy,fileTypeId) {
   return request({
-    url: `/fileShare/queryFileShareCondition?pageNum=${pageNum}&currentPage=${currentPage}&fileName=${fileName}&fileBy=${fileBy}`,
+    url: `/fileShare/queryFileShareCondition?pageNum=${pageNum}&currentPage=${currentPage}&fileName=${fileName}&fileBy=${fileBy}&fileTypeId=${fileTypeId}`,
     method: 'get',
   })
 }
@@ -40,14 +40,22 @@ export function expExmPaper(scope) {
   });
 
 }
-// //项目查询
-// export function ProjectInquire(pageNum, pageSize, projectName, bid,) {
-//   return request({
-//     url: `/newProject/pc/list?pageNum=${pageNum}&pageSize=${pageSize}&projectName=${projectName}&bid=${bid}`,
-//     method: 'get',
-//   })
-// }
+//文件查询
+export function ProjectInquire(searchContext, pageNum, currentPage,) {
+  return request({
+    url: `/fileShare/indexSearch?searchContext=${searchContext}&currentPage=${currentPage}&pageNum=${pageNum}`,
+    method: 'get',
+  })
+}
 
+//上传
+export function PushProject(params,fileTypeId) {
+  return request({
+    url: `/fileShare/uploadFileShare?fileTypeId=${fileTypeId}`,
+    method: 'post',
+    data: params
+  })
+}
 
 // //新增
 // export function getAddList(data) {

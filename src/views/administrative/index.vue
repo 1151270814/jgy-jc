@@ -120,6 +120,7 @@ export default {
       flag: "",
       tableData: [],
       flas: "",
+      fileTypeId: 7,
     };
   },
   created() {
@@ -130,7 +131,7 @@ export default {
   methods: {
     async getProjectList() {
       let { fileName, fileBy } = this.formInline;
-      let data = await getList(this.pageNum, this.pageSize, fileName, fileBy);
+      let data = await getList(this.pageNum, this.pageSize, fileName, fileBy,this.fileTypeId);
       this.tableData = data.records;
       this.total = data.total;
       this.loading = false;

@@ -32,6 +32,7 @@
 <script>
 import { debounce } from "@/utils/utils";
 import axios from "axios";
+import { PushProject } from "@/api/regulation/project";
 import { getToken } from "@/utils/auth";
 export default {
   data() {
@@ -50,7 +51,7 @@ export default {
         // 上传的地址
         url:
           this.$store.state.apiConfiguration.url +
-          `fileShare/uploadFileShare/?`,
+          `fileShare/uploadFileShare?fileTypeId=${3}`,
         fileList: [],
         fileName: [],
       },
@@ -97,7 +98,7 @@ export default {
       this.upload.fileList = fileList;
     },
     // 提交上传文件
-    submitUpload() {
+    async submitUpload() {
       // 创建新的数据对象
       let formData = new FormData();
       //将上传的文件放到数据对象中
@@ -105,6 +106,19 @@ export default {
         formData.append("file", file.raw);
         // this.upload.fileName.push(file.name);
       });
+      // let data = await PushProject(formData, 3);
+      // debugger
+      // if (data.code == 200) {
+      //   this.upload.open = false;
+      //   this.upload.isUploading = false;
+      //   this.$refs.upload.clearFiles();
+      //   this.$message({
+      //     type: "success",
+      //     message: response.data.message,
+      //   });
+      // } else {
+      //   this.$message.error(response.data.message);
+      // }
       //  文件名
       // formData.append("fileName", this.upload.fileName);
       // 自定义上传
@@ -129,39 +143,6 @@ export default {
           }
         });
     },
-    // handlePreview(file) {
-    //   if (this.flag == false) {
-    //     this.fileDowloadName =
-    //       this.$store.state.apiConfiguration.url +
-    //       `/fs/download?name=${encodeURI(encodeURI(file.name))}&path=${
-    //         file.url
-    //       }`;
-    //     location.href = this.fileDowloadName;
-    //   }
-    // },
-
-    // beforeRemove(file, fileList) {
-    //   return this.$confirm(`确定移除 ${file.name}？`);
-    // },
-
-    // // 上传成功时的钩子
-    // uploadSuccess(res, file, fileList) {
-    //   if (res.code !== 200) {
-    //     return this.$message({
-    //       type: "warning",
-    //       message: "上传失败!",
-    //     });
-    //   }
-    //   this.arr.push(res);
-    //   let formImgList = [];
-    //   this.arr.forEach((item) => {
-    //     formImgList.push({
-    //       name: item.body.fileName,
-    //       url: item.body.url,
-    //     });
-    //   });
-    //   this.ruleForm.projectDocFile = formImgList;
-    // },
     //文件大小
     beforeUpload(file) {
       let FileFormat = file.name.substring(file.name.lastIndexOf(".") + 1);

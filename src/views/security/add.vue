@@ -50,7 +50,7 @@ export default {
         // 上传的地址
         url:
           this.$store.state.apiConfiguration.url +
-          `fileShare/uploadFileShare/?`,
+          `fileShare/uploadFileShare?fileTypeId=${4}`,
         fileList: [],
         fileName: [],
       },

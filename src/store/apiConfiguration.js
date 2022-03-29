@@ -15,7 +15,7 @@ NOW 服务环境
 */
 // const NOW = 'dev'
 const state = {
-      url: 'http://192.168.5.9:8080/',
+      url: 'http://192.168.5.2:8080/',
       imgFileUrl: '',
       fileUrl: '',
       cdnUrl: '',
